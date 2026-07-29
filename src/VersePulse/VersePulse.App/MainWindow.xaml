@@ -1,0 +1,110 @@
+﻿<Window x:Class="VersePulse.App.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="VersePulse"
+        Width="380"
+        Height="330"
+        WindowStartupLocation="CenterScreen"
+        ResizeMode="NoResize"
+        Background="#10151C">
+
+    <Border Margin="18"
+            Padding="22"
+            CornerRadius="14"
+            Background="#18212B"
+            BorderBrush="#344454"
+            BorderThickness="1">
+
+        <StackPanel>
+            <TextBlock Text="VersePulse"
+                       FontSize="30"
+                       FontWeight="SemiBold"
+                       Foreground="White"
+                       HorizontalAlignment="Center"/>
+
+            <TextBlock Text="STAR CITIZEN SERVER HEALTH"
+                       Margin="0,4,0,24"
+                       FontSize="11"
+                       Foreground="#8FA7BB"
+                       HorizontalAlignment="Center"/>
+
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="42"/>
+                    <RowDefinition Height="42"/>
+                    <RowDefinition Height="42"/>
+                    <RowDefinition Height="42"/>
+                    <RowDefinition Height="42"/>
+                </Grid.RowDefinitions>
+
+                <TextBlock Grid.Row="0"
+                           Text="Star Citizen"
+                           Foreground="#B8C7D3"
+                           VerticalAlignment="Center"/>
+
+                <TextBlock Grid.Row="0"
+                           Grid.Column="1"
+                           Text="Not running"
+                           Foreground="#F0B35A"
+                           FontWeight="SemiBold"
+                           VerticalAlignment="Center"/>
+
+                <TextBlock Grid.Row="1"
+                           Text="Client FPS"
+                           Foreground="#B8C7D3"
+                           VerticalAlignment="Center"/>
+
+                <TextBlock Grid.Row="1"
+                           Grid.Column="1"
+                           Text="--"
+                           Foreground="White"
+                           FontSize="18"
+                           FontWeight="SemiBold"
+                           VerticalAlignment="Center"/>
+
+                <TextBlock Grid.Row="2"
+                           Text="Server FPS"
+                           Foreground="#B8C7D3"
+                           VerticalAlignment="Center"/>
+
+                <TextBlock Grid.Row="2"
+                           Grid.Column="1"
+                           Text="--"
+                           Foreground="White"
+                           FontSize="18"
+                           FontWeight="SemiBold"
+                           VerticalAlignment="Center"/>
+
+                <TextBlock Grid.Row="3"
+                           Text="Ping"
+                           Foreground="#B8C7D3"
+                           VerticalAlignment="Center"/>
+
+                <TextBlock Grid.Row="3"
+                           Grid.Column="1"
+                           Text="-- ms"
+                           Foreground="White"
+                           FontSize="18"
+                           FontWeight="SemiBold"
+                           VerticalAlignment="Center"/>
+
+                <TextBlock Grid.Row="4"
+                           Text="Status"
+                           Foreground="#B8C7D3"
+                           VerticalAlignment="Center"/>
+
+                <TextBlock Grid.Row="4"
+                           Grid.Column="1"
+                           Text="WAITING"
+                           Foreground="#F0B35A"
+                           FontWeight="Bold"
+                           VerticalAlignment="Center"/>
+            </Grid>
+        </StackPanel>
+    </Border>
+</Window>
