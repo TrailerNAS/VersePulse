@@ -27,16 +27,19 @@ namespace VersePulse.App
             UpdateGameState();
         }
 
-        private void GameStateTimer_Tick(object? sender, EventArgs e)
+        private void GameStateTimer_Tick(
+            object? sender,
+            EventArgs e)
         {
             UpdateGameState();
         }
 
         private void UpdateGameState()
         {
-            GameState state = _gameStateService.GetCurrentState();
+            TelemetryData telemetry =
+                _gameStateService.GetTelemetry();
 
-            switch (state)
+            switch (telemetry.GameState)
             {
                 case GameState.GameClosed:
                     SetGameStatus("Game closed", 240, 179, 90);
@@ -62,6 +65,34 @@ namespace VersePulse.App
                     SetGameStatus("In server", 50, 205, 90);
                     break;
             }
+
+            DeveloperStateText.Text =
+                FormatGameState(telemetry.GameState);
+
+            SessionText.Text = telemetry.SessionId;
+            EnvironmentText.Text = telemetry.ServerName;
+            RegionText.Text = telemetry.Region;
+
+            LinesParsedText.Text =
+                telemetry.LinesParsed.ToString("N0");
+
+            LastEventText.Text = telemetry.LastEvent;
+            LogFileText.Text = telemetry.LogFilePath;
+        }
+
+        private static string FormatGameState(
+            GameState gameState)
+        {
+            return gameState switch
+            {
+                GameState.GameClosed => "Game closed",
+                GameState.LauncherOpen => "Launcher",
+                GameState.Starting => "Starting",
+                GameState.MainMenu => "Main menu",
+                GameState.Loading => "Loading",
+                GameState.InServer => "In server",
+                _ => "Unknown"
+            };
         }
 
         private void SetGameStatus(
@@ -72,13 +103,33 @@ namespace VersePulse.App
         {
             GameStatusText.Text = text;
 
-            GameStatusText.Foreground = new SolidColorBrush(
-                Color.FromRgb(red, green, blue));
+            GameStatusText.Foreground =
+                new SolidColorBrush(
+                    Color.FromRgb(red, green, blue));
+        }
+
+        private void DeveloperModeButton_Click(
+            object sender,
+            RoutedEventArgs e)
+        {
+            bool isVisible =
+                DeveloperPanel.Visibility == Visibility.Visible;
+
+            DeveloperPanel.Visibility = isVisible
+                ? Visibility.Collapsed
+                : Visibility.Visible;
+
+            DeveloperModeButton.Content = isVisible
+                ? "Show Developer Diagnostics"
+                : "Hide Developer Diagnostics";
+
+            Height = isVisible ? 390 : 630;
         }
 
         protected override void OnClosed(EventArgs e)
         {
             _gameStateTimer.Stop();
+
             base.OnClosed(e);
         }
     }
