@@ -7,21 +7,47 @@ namespace VersePulse.App
 {
     public partial class MainWindow : Window
     {
-        private readonly DispatcherTimer _gameStateTimer;
-        private readonly GameStateService _gameStateService;
+        private readonly DispatcherTimer
+            _gameStateTimer;
+
+        private readonly SettingsService
+            _settingsService;
+
+        private readonly StarCitizenPathService
+            _pathService;
+
+        private readonly GameStateService
+            _gameStateService;
 
         public MainWindow()
         {
             InitializeComponent();
 
-            _gameStateService = new GameStateService();
+            _settingsService =
+                new SettingsService();
 
-            _gameStateTimer = new DispatcherTimer
-            {
-                Interval = TimeSpan.FromSeconds(1)
-            };
+            _pathService =
+                new StarCitizenPathService(
+                    _settingsService);
 
-            _gameStateTimer.Tick += GameStateTimer_Tick;
+            string? executablePath =
+                _pathService
+                    .GetOrRequestExecutablePath();
+
+            _gameStateService =
+                new GameStateService(
+                    executablePath);
+
+            _gameStateTimer =
+                new DispatcherTimer
+                {
+                    Interval =
+                        TimeSpan.FromSeconds(1)
+                };
+
+            _gameStateTimer.Tick +=
+                GameStateTimer_Tick;
+
             _gameStateTimer.Start();
 
             UpdateGameState();
@@ -37,47 +63,86 @@ namespace VersePulse.App
         private void UpdateGameState()
         {
             TelemetryData telemetry =
-                _gameStateService.GetTelemetry();
+                _gameStateService
+                    .GetTelemetry();
 
             switch (telemetry.GameState)
             {
                 case GameState.GameClosed:
-                    SetGameStatus("Game closed", 240, 179, 90);
+                    SetGameStatus(
+                        "Game closed",
+                        240,
+                        179,
+                        90);
                     break;
 
                 case GameState.LauncherOpen:
-                    SetGameStatus("Launcher", 84, 174, 255);
+                    SetGameStatus(
+                        "Launcher",
+                        84,
+                        174,
+                        255);
                     break;
 
                 case GameState.Starting:
-                    SetGameStatus("Starting", 84, 174, 255);
+                    SetGameStatus(
+                        "Starting",
+                        84,
+                        174,
+                        255);
                     break;
 
                 case GameState.MainMenu:
-                    SetGameStatus("Main menu", 84, 174, 255);
+                    SetGameStatus(
+                        "Main menu",
+                        84,
+                        174,
+                        255);
                     break;
 
                 case GameState.Loading:
-                    SetGameStatus("Loading", 255, 193, 71);
+                    SetGameStatus(
+                        "Loading",
+                        255,
+                        193,
+                        71);
                     break;
 
                 case GameState.InServer:
-                    SetGameStatus("In server", 50, 205, 90);
+                    SetGameStatus(
+                        "In server",
+                        50,
+                        205,
+                        90);
                     break;
             }
 
             DeveloperStateText.Text =
-                FormatGameState(telemetry.GameState);
+                FormatGameState(
+                    telemetry.GameState);
 
-            SessionText.Text = telemetry.SessionId;
-            EnvironmentText.Text = telemetry.ServerName;
-            RegionText.Text = telemetry.Region;
+            SessionText.Text =
+                telemetry.SessionId;
+
+            EnvironmentText.Text =
+                telemetry.ServerName;
+
+            RegionText.Text =
+                telemetry.Region;
 
             LinesParsedText.Text =
-                telemetry.LinesParsed.ToString("N0");
+                telemetry.LinesParsed
+                    .ToString("N0");
 
-            LastEventText.Text = telemetry.LastEvent;
-            LogFileText.Text = telemetry.LogFilePath;
+            LastEventText.Text =
+                telemetry.LastEvent;
+
+            LogFileText.Text =
+                telemetry.LogFilePath;
+
+            GameLocationText.Text =
+                _gameStateService
+                    .GetConfiguredExecutablePath();
         }
 
         private static string FormatGameState(
@@ -85,12 +150,24 @@ namespace VersePulse.App
         {
             return gameState switch
             {
-                GameState.GameClosed => "Game closed",
-                GameState.LauncherOpen => "Launcher",
-                GameState.Starting => "Starting",
-                GameState.MainMenu => "Main menu",
-                GameState.Loading => "Loading",
-                GameState.InServer => "In server",
+                GameState.GameClosed =>
+                    "Game closed",
+
+                GameState.LauncherOpen =>
+                    "Launcher",
+
+                GameState.Starting =>
+                    "Starting",
+
+                GameState.MainMenu =>
+                    "Main menu",
+
+                GameState.Loading =>
+                    "Loading",
+
+                GameState.InServer =>
+                    "In server",
+
                 _ => "Unknown"
             };
         }
@@ -101,11 +178,15 @@ namespace VersePulse.App
             byte green,
             byte blue)
         {
-            GameStatusText.Text = text;
+            GameStatusText.Text =
+                text;
 
             GameStatusText.Foreground =
                 new SolidColorBrush(
-                    Color.FromRgb(red, green, blue));
+                    Color.FromRgb(
+                        red,
+                        green,
+                        blue));
         }
 
         private void DeveloperModeButton_Click(
@@ -113,20 +194,66 @@ namespace VersePulse.App
             RoutedEventArgs e)
         {
             bool isVisible =
-                DeveloperPanel.Visibility == Visibility.Visible;
+                DeveloperPanel.Visibility
+                == Visibility.Visible;
 
-            DeveloperPanel.Visibility = isVisible
-                ? Visibility.Collapsed
-                : Visibility.Visible;
+            DeveloperPanel.Visibility =
+                isVisible
+                    ? Visibility.Collapsed
+                    : Visibility.Visible;
 
-            DeveloperModeButton.Content = isVisible
-                ? "Show Developer Diagnostics"
-                : "Hide Developer Diagnostics";
+            DeveloperModeButton.Content =
+                isVisible
+                    ? "Show Developer Diagnostics"
+                    : "Hide Developer Diagnostics";
 
-            Height = isVisible ? 390 : 630;
+            Height =
+                isVisible
+                    ? 431
+                    : 730;
         }
 
-        protected override void OnClosed(EventArgs e)
+        private void ChangeGameLocationButton_Click(
+            object sender,
+            RoutedEventArgs e)
+        {
+            _gameStateTimer.Stop();
+
+            try
+            {
+                string? selectedPath =
+                    _pathService
+                        .RequestExecutablePath();
+
+                if (string.IsNullOrWhiteSpace(
+                        selectedPath))
+                {
+                    return;
+                }
+
+                _gameStateService
+                    .SetStarCitizenExecutablePath(
+                        selectedPath);
+
+                GameLocationText.Text =
+                    selectedPath;
+
+                MessageBox.Show(
+                    "Star Citizen location saved.",
+                    "VersePulse",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Information);
+
+                UpdateGameState();
+            }
+            finally
+            {
+                _gameStateTimer.Start();
+            }
+        }
+
+        protected override void OnClosed(
+            EventArgs e)
         {
             _gameStateTimer.Stop();
 
