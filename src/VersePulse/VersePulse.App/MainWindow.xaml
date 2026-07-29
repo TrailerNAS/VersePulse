@@ -6,6 +6,7 @@
         Height="330"
         WindowStartupLocation="CenterScreen"
         ResizeMode="NoResize"
+        Topmost="True"
         Background="#10151C">
 
     <Border Margin="18"
@@ -47,7 +48,8 @@
                            Foreground="#B8C7D3"
                            VerticalAlignment="Center"/>
 
-                <TextBlock Grid.Row="0"
+                <TextBlock x:Name="GameStatusText"
+                           Grid.Row="0"
                            Grid.Column="1"
                            Text="Not running"
                            Foreground="#F0B35A"
