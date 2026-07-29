@@ -1,2 +1,1 @@
-# VersePulse
-A lightweight, non-invasive performance and server health overlay for Star Citizen.
+VersePulse is a lightweight, non-invasive desktop companion for Star Citizen that provides live server health and performance information without modifying the game or interacting with protected game memory.
