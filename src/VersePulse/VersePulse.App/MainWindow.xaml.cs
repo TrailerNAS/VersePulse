@@ -1,4 +1,3 @@
-﻿using System;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Threading;
@@ -13,8 +12,8 @@ namespace VersePulse.App
         private readonly SettingsService
             _settingsService;
 
-        private readonly StarCitizenPathService
-            _pathService;
+        private readonly InstallationManager
+            _installationManager;
 
         private readonly GameStateService
             _gameStateService;
@@ -26,17 +25,13 @@ namespace VersePulse.App
             _settingsService =
                 new SettingsService();
 
-            _pathService =
-                new StarCitizenPathService(
+            _installationManager =
+                new InstallationManager(
                     _settingsService);
-
-            string? executablePath =
-                _pathService
-                    .GetOrRequestExecutablePath();
 
             _gameStateService =
                 new GameStateService(
-                    executablePath);
+                    _installationManager);
 
             _gameStateTimer =
                 new DispatcherTimer
@@ -137,12 +132,35 @@ namespace VersePulse.App
             LastEventText.Text =
                 telemetry.LastEvent;
 
-            LogFileText.Text =
-                telemetry.LogFilePath;
-
-            GameLocationText.Text =
+            InstallationInfo installation =
                 _gameStateService
-                    .GetConfiguredExecutablePath();
+                    .GetInstallation();
+
+            RootPathText.Text =
+                DisplayValue(
+                    installation.RootPath);
+
+            ChannelText.Text =
+                DisplayValue(
+                    installation.Channel);
+
+            ExecutablePathText.Text =
+                DisplayValue(
+                    installation.ExecutablePath);
+
+            LogFileText.Text =
+                telemetry.LogFilePath != "--"
+                    ? telemetry.LogFilePath
+                    : DisplayValue(
+                        installation.GameLogPath);
+        }
+
+        private static string DisplayValue(
+            string? value)
+        {
+            return string.IsNullOrWhiteSpace(value)
+                ? "--"
+                : value;
         }
 
         private static string FormatGameState(
@@ -210,7 +228,7 @@ namespace VersePulse.App
             Height =
                 isVisible
                     ? 431
-                    : 730;
+                    : 820;
         }
 
         private void ChangeGameLocationButton_Click(
@@ -221,25 +239,21 @@ namespace VersePulse.App
 
             try
             {
-                string? selectedPath =
-                    _pathService
-                        .RequestExecutablePath();
+                InstallationInfo? installation =
+                    _installationManager
+                        .RequestInstallation();
 
-                if (string.IsNullOrWhiteSpace(
-                        selectedPath))
+                if (installation == null)
                 {
                     return;
                 }
 
                 _gameStateService
-                    .SetStarCitizenExecutablePath(
-                        selectedPath);
-
-                GameLocationText.Text =
-                    selectedPath;
+                    .SetInstallation(
+                        installation);
 
                 MessageBox.Show(
-                    "Star Citizen location saved.",
+                    $"Star Citizen installation saved.\n\nChannel: {installation.Channel}",
                     "VersePulse",
                     MessageBoxButton.OK,
                     MessageBoxImage.Information);

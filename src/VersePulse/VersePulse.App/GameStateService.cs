@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -9,37 +9,61 @@ namespace VersePulse.App
     {
         private long _lastLogPosition;
         private string? _currentLogPath;
-        private string? _starCitizenExecutablePath;
+        private readonly InstallationManager
+            _installationManager;
+
+        private InstallationInfo _installation =
+            InstallationInfo.Empty;
 
         private readonly TelemetryData _telemetry =
             new();
 
         public GameStateService(
-            string? starCitizenExecutablePath)
+            InstallationManager installationManager)
         {
-            _starCitizenExecutablePath =
-                starCitizenExecutablePath;
+            _installationManager =
+                installationManager;
+
+            _installation =
+                _installationManager
+                    .GetOrRequestInstallation();
         }
 
-        public void SetStarCitizenExecutablePath(
-            string? starCitizenExecutablePath)
+        public void RefreshInstallation()
         {
-            _starCitizenExecutablePath =
-                starCitizenExecutablePath;
+            InstallationInfo installation =
+                _installationManager
+                    .ResolveActiveInstallation();
 
+            if (string.Equals(
+                    _installation.ExecutablePath,
+                    installation.ExecutablePath,
+                    StringComparison.OrdinalIgnoreCase))
+            {
+                _installation = installation;
+                return;
+            }
+
+            _installation = installation;
             ResetLogTracking();
         }
 
-        public string GetConfiguredExecutablePath()
+        public void SetInstallation(
+            InstallationInfo installation)
         {
-            return string.IsNullOrWhiteSpace(
-                _starCitizenExecutablePath)
-                ? "--"
-                : _starCitizenExecutablePath;
+            _installation = installation;
+            ResetLogTracking();
+        }
+
+        public InstallationInfo GetInstallation()
+        {
+            return _installation;
         }
 
         public TelemetryData GetTelemetry()
         {
+            RefreshInstallation();
+
             Process? starCitizenProcess =
                 GetStarCitizenProcess();
 
@@ -159,9 +183,9 @@ namespace VersePulse.App
 
         private string? FindGameLogPath()
         {
-            return StarCitizenPathService
-                .GetGameLogPath(
-                    _starCitizenExecutablePath);
+            return _installation.IsValid
+                ? _installation.GameLogPath
+                : null;
         }
 
         private void ReadNewLogEntries(
