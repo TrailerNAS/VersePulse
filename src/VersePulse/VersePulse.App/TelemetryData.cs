@@ -12,9 +12,22 @@
 
         public string LogFilePath { get; set; } = "--";
 
-        public string LastEvent { get; set; } = "Waiting for game...";
+        public string LastEvent { get; set; } =
+            "Waiting for game...";
 
         public long LinesParsed { get; set; }
+
+        public double? ClientFps { get; set; }
+
+        public double? MainThreadFps { get; set; }
+
+        public double? ServerFps { get; set; }
+
+        public double? CpuUsagePercent { get; set; }
+
+        public double? RamUsageMb { get; set; }
+
+        public double? CommittedMemoryMb { get; set; }
 
         public bool IsConnected =>
             GameState == GameState.InServer;

@@ -19,6 +19,10 @@ namespace VersePulse.App
         private readonly TelemetryData _telemetry =
             new();
 
+        private readonly ProcessTelemetryService
+    _processTelemetryService =
+        new();
+
         public GameStateService(
             InstallationManager installationManager,
             ILogReader logReader,
@@ -66,6 +70,9 @@ namespace VersePulse.App
         public TelemetryData GetTelemetry()
         {
             RefreshInstallation();
+
+            _processTelemetryService.Update(
+                _telemetry);
 
             Process? starCitizenProcess =
                 GetStarCitizenProcess();

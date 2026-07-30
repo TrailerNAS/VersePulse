@@ -3,8 +3,8 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="VersePulse"
         Width="390"
-        Height="455"
-        MinHeight="390"
+        Height="580"
+        MinHeight="500"
         WindowStartupLocation="CenterScreen"
         ResizeMode="NoResize"
         Topmost="True"
@@ -30,6 +30,7 @@
                        Foreground="#8FA7BB"
                        HorizontalAlignment="Center"/>
 
+            <!-- Main telemetry -->
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
@@ -41,8 +42,12 @@
                     <RowDefinition Height="42"/>
                     <RowDefinition Height="42"/>
                     <RowDefinition Height="42"/>
+                    <RowDefinition Height="42"/>
+                    <RowDefinition Height="42"/>
+                    <RowDefinition Height="42"/>
                 </Grid.RowDefinitions>
 
+                <!-- Game status -->
                 <TextBlock Grid.Row="0"
                            Text="Star Citizen"
                            Foreground="#B8C7D3"
@@ -56,12 +61,14 @@
                            FontWeight="SemiBold"
                            VerticalAlignment="Center"/>
 
+                <!-- Client FPS -->
                 <TextBlock Grid.Row="1"
                            Text="Client FPS"
                            Foreground="#B8C7D3"
                            VerticalAlignment="Center"/>
 
-                <TextBlock Grid.Row="1"
+                <TextBlock x:Name="ClientFPSText"
+                           Grid.Row="1"
                            Grid.Column="1"
                            Text="--"
                            Foreground="White"
@@ -69,6 +76,7 @@
                            FontWeight="SemiBold"
                            VerticalAlignment="Center"/>
 
+                <!-- Server FPS -->
                 <TextBlock Grid.Row="2"
                            Text="Server FPS"
                            Foreground="#B8C7D3"
@@ -82,6 +90,7 @@
                            FontWeight="SemiBold"
                            VerticalAlignment="Center"/>
 
+                <!-- Ping -->
                 <TextBlock Grid.Row="3"
                            Text="Ping"
                            Foreground="#B8C7D3"
@@ -94,14 +103,54 @@
                            FontSize="18"
                            FontWeight="SemiBold"
                            VerticalAlignment="Center"/>
+
+                <!-- CPU usage -->
+                <TextBlock Grid.Row="4"
+                           Text="CPU Usage"
+                           Foreground="#B8C7D3"
+                           VerticalAlignment="Center"/>
+
+                <TextBlock x:Name="CpuUsageText"
+                           Grid.Row="4"
+                           Grid.Column="1"
+                           Text="-- %"
+                           Foreground="White"
+                           FontSize="18"
+                           FontWeight="SemiBold"
+                           VerticalAlignment="Center"/>
+
+                <!-- RAM usage -->
+                <TextBlock Grid.Row="5"
+                           Text="RAM Usage"
+                           Foreground="#B8C7D3"
+                           VerticalAlignment="Center"/>
+
+                <TextBlock x:Name="RamUsageText"
+                           Grid.Row="5"
+                           Grid.Column="1"
+                           Text="-- MB"
+                           Foreground="White"
+                           FontSize="18"
+                           FontWeight="SemiBold"
+                           VerticalAlignment="Center"/>
+
+                <!-- Committed memory -->
+                <TextBlock Grid.Row="6"
+                           Text="Committed Memory"
+                           Foreground="#B8C7D3"
+                           VerticalAlignment="Center"/>
+
+                <TextBlock x:Name="CommittedMemoryText"
+                           Grid.Row="6"
+                           Grid.Column="1"
+                           Text="-- MB"
+                           Foreground="White"
+                           FontSize="18"
+                           FontWeight="SemiBold"
+                           VerticalAlignment="Center"/>
             </Grid>
 
-            <Button x:Name="DeveloperModeButton"
-                    Content="Show Developer Diagnostics"
-                    Margin="0,18,0,0"
-                    Height="34"
-                    Click="DeveloperModeButton_Click"/>
-
+            <!-- Developer diagnostics -->
             <Border x:Name="DeveloperPanel"
                     Visibility="Collapsed"
                     Margin="0,14,0,0"
@@ -133,6 +182,7 @@
                             <RowDefinition Height="50"/>
                         </Grid.RowDefinitions>
 
+                        <!-- State -->
                         <TextBlock Grid.Row="0"
                                    Text="State"
                                    Foreground="#8FA7BB"/>
@@ -143,6 +193,7 @@
                                    Text="--"
                                    Foreground="White"/>
 
+                        <!-- Session -->
                         <TextBlock Grid.Row="1"
                                    Text="Session"
                                    Foreground="#8FA7BB"/>
@@ -155,6 +206,7 @@
                                    TextTrimming="CharacterEllipsis"
                                    ToolTip="{Binding Text, RelativeSource={RelativeSource Self}}"/>
 
+                        <!-- Environment -->
                         <TextBlock Grid.Row="2"
                                    Text="Environment"
                                    Foreground="#8FA7BB"/>
@@ -167,6 +219,7 @@
                                    TextTrimming="CharacterEllipsis"
                                    ToolTip="{Binding Text, RelativeSource={RelativeSource Self}}"/>
 
+                        <!-- Region -->
                         <TextBlock Grid.Row="3"
                                    Text="Region"
                                    Foreground="#8FA7BB"/>
@@ -177,6 +230,7 @@
                                    Text="--"
                                    Foreground="White"/>
 
+                        <!-- Lines parsed -->
                         <TextBlock Grid.Row="4"
                                    Text="Lines parsed"
                                    Foreground="#8FA7BB"/>
@@ -187,6 +241,7 @@
                                    Text="0"
                                    Foreground="White"/>
 
+                        <!-- Last event -->
                         <TextBlock Grid.Row="5"
                                    Text="Last event"
                                    Foreground="#8FA7BB"/>
@@ -254,6 +309,12 @@
                                ToolTip="{Binding Text, RelativeSource={RelativeSource Self}}"/>
                 </StackPanel>
             </Border>
+
+            <Button x:Name="DeveloperModeButton"
+                    Content="Show Developer Diagnostics"
+                    Margin="0,14,0,0"
+                    Height="34"
+                    Click="DeveloperModeButton_Click"/>
         </StackPanel>
     </Border>
 </Window>

@@ -41,7 +41,8 @@ namespace VersePulse.App
                     {
                         new SessionParser(),
                         new EnvironmentParser(),
-                        new GameStateParser()
+                        new GameStateParser(),
+                        new PerformanceParser()
                     });
 
             _gameStateService =
@@ -77,6 +78,26 @@ namespace VersePulse.App
             TelemetryData telemetry =
                 _gameStateService
                     .GetTelemetry();
+
+            ClientFPSText.Text =
+                telemetry.ClientFps.HasValue
+                    ? $"{telemetry.ClientFps.Value:F1}"
+                    : "--";
+
+            CpuUsageText.Text =
+                telemetry.CpuUsagePercent.HasValue
+                    ? $"{telemetry.CpuUsagePercent.Value:F1} %"
+                    : "-- %";
+
+            RamUsageText.Text =
+                telemetry.RamUsageMb.HasValue
+                    ? $"{telemetry.RamUsageMb.Value:N0} MB"
+                    : "-- MB";
+
+            CommittedMemoryText.Text =
+                telemetry.CommittedMemoryMb.HasValue
+                    ? $"{telemetry.CommittedMemoryMb.Value:N0} MB"
+                    : "-- MB";
 
             switch (telemetry.GameState)
             {
