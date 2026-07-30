@@ -9,31 +9,36 @@ namespace VersePulse.App
 {
     public partial class MainWindow : Window
     {
-        private readonly DispatcherTimer
-            _gameStateTimer;
+        private readonly DispatcherTimer _gameStateTimer;
+        private readonly SettingsService _settingsService;
+        private readonly InstallationManager _installationManager;
+        private readonly GameStateService _gameStateService;
 
-        private readonly SettingsService
-            _settingsService;
+        private static readonly Brush OfflineBrush =
+            new SolidColorBrush(Color.FromRgb(240, 179, 90));
 
-        private readonly InstallationManager
-            _installationManager;
+        private static readonly Brush BlueBrush =
+            new SolidColorBrush(Color.FromRgb(84, 174, 255));
 
-        private readonly GameStateService
-            _gameStateService;
+        private static readonly Brush LoadingBrush =
+            new SolidColorBrush(Color.FromRgb(255, 193, 71));
+
+        private static readonly Brush OnlineBrush =
+            new SolidColorBrush(Color.FromRgb(50, 205, 90));
+
+        private string _lastStatus = string.Empty;
+        private Brush? _lastBrush;
 
         public MainWindow()
         {
             InitializeComponent();
 
-            _settingsService =
-                new SettingsService();
+            _settingsService = new SettingsService();
 
             _installationManager =
-                new InstallationManager(
-                    _settingsService);
+                new InstallationManager(_settingsService);
 
-            ILogReader logReader =
-                new LogReader();
+            ILogReader logReader = new LogReader();
 
             ParserPipeline parserPipeline =
                 new(
@@ -51,16 +56,12 @@ namespace VersePulse.App
                     logReader,
                     parserPipeline);
 
-            _gameStateTimer =
-                new DispatcherTimer
-                {
-                    Interval =
-                        TimeSpan.FromSeconds(1)
-                };
+            _gameStateTimer = new DispatcherTimer
+            {
+                Interval = TimeSpan.FromSeconds(1)
+            };
 
-            _gameStateTimer.Tick +=
-                GameStateTimer_Tick;
-
+            _gameStateTimer.Tick += GameStateTimer_Tick;
             _gameStateTimer.Start();
 
             UpdateGameState();
@@ -75,132 +76,93 @@ namespace VersePulse.App
 
         private void UpdateGameState()
         {
-            TelemetryData telemetry =
-                _gameStateService
-                    .GetTelemetry();
-
-            ClientFPSText.Text =
-                telemetry.ClientFps.HasValue
-                    ? $"{telemetry.ClientFps.Value:F1}"
-                    : "--";
-
-            CpuUsageText.Text =
-                telemetry.CpuUsagePercent.HasValue
-                    ? $"{telemetry.CpuUsagePercent.Value:F1} %"
-                    : "-- %";
-
-            RamUsageText.Text =
-                telemetry.RamUsageMb.HasValue
-                    ? $"{telemetry.RamUsageMb.Value:N0} MB"
-                    : "-- MB";
-
-            CommittedMemoryText.Text =
-                telemetry.CommittedMemoryMb.HasValue
-                    ? $"{telemetry.CommittedMemoryMb.Value:N0} MB"
-                    : "-- MB";
-
-            switch (telemetry.GameState)
+            try
             {
-                case GameState.GameClosed:
-                    SetGameStatus(
-                        "Game closed",
-                        240,
-                        179,
-                        90);
-                    break;
+                TelemetryData telemetry =
+                    _gameStateService.GetTelemetry();
 
-                case GameState.LauncherOpen:
-                    SetGameStatus(
-                        "Launcher",
-                        84,
-                        174,
-                        255);
-                    break;
+                SetText(
+                    ClientFPSText,
+                    telemetry.ClientFps.HasValue
+                        ? $"{telemetry.ClientFps.Value:F1}"
+                        : "--");
 
-                case GameState.Starting:
-                    SetGameStatus(
-                        "Starting",
-                        84,
-                        174,
-                        255);
-                    break;
+                SetText(
+                    CpuUsageText,
+                    telemetry.CpuUsagePercent.HasValue
+                        ? $"{telemetry.CpuUsagePercent.Value:F1} %"
+                        : "-- %");
 
-                case GameState.MainMenu:
-                    SetGameStatus(
-                        "Main menu",
-                        84,
-                        174,
-                        255);
-                    break;
+                SetText(
+                    RamUsageText,
+                    telemetry.RamUsageMb.HasValue
+                        ? $"{telemetry.RamUsageMb.Value:N0} MB"
+                        : "-- MB");
 
-                case GameState.Loading:
-                    SetGameStatus(
-                        "Loading",
-                        255,
-                        193,
-                        71);
-                    break;
+                SetText(
+                    CommittedMemoryText,
+                    telemetry.CommittedMemoryMb.HasValue
+                        ? $"{telemetry.CommittedMemoryMb.Value:N0} MB"
+                        : "-- MB");
 
-                case GameState.InServer:
-                    SetGameStatus(
-                        "In server",
-                        50,
-                        205,
-                        90);
-                    break;
+                switch (telemetry.GameState)
+                {
+                    case GameState.GameClosed:
+                        SetGameStatus("Game closed", OfflineBrush);
+                        break;
+
+                    case GameState.LauncherOpen:
+                        SetGameStatus("Launcher", BlueBrush);
+                        break;
+
+                    case GameState.Starting:
+                        SetGameStatus("Starting", BlueBrush);
+                        break;
+
+                    case GameState.MainMenu:
+                        SetGameStatus("Main menu", BlueBrush);
+                        break;
+
+                    case GameState.Loading:
+                        SetGameStatus("Loading", LoadingBrush);
+                        break;
+
+                    case GameState.InServer:
+                        SetGameStatus("In server", OnlineBrush);
+                        break;
+                }
+            }
+            catch
+            {
+                SetGameStatus("Error", OfflineBrush);
             }
         }
 
-        private static string DisplayValue(
-            string? value)
+        private static void SetText(
+            System.Windows.Controls.TextBlock textBlock,
+            string value)
         {
-            return string.IsNullOrWhiteSpace(value)
-                ? "--"
-                : value;
-        }
-
-        private static string FormatGameState(
-            GameState gameState)
-        {
-            return gameState switch
+            if (textBlock.Text != value)
             {
-                GameState.GameClosed =>
-                    "Game closed",
-
-                GameState.LauncherOpen =>
-                    "Launcher",
-
-                GameState.Starting =>
-                    "Starting",
-
-                GameState.MainMenu =>
-                    "Main menu",
-
-                GameState.Loading =>
-                    "Loading",
-
-                GameState.InServer =>
-                    "In server",
-
-                _ => "Unknown"
-            };
+                textBlock.Text = value;
+            }
         }
 
         private void SetGameStatus(
             string text,
-            byte red,
-            byte green,
-            byte blue)
+            Brush brush)
         {
-            GameStatusText.Text =
-                text;
+            if (_lastStatus != text)
+            {
+                GameStatusText.Text = text;
+                _lastStatus = text;
+            }
 
-            GameStatusText.Foreground =
-                new SolidColorBrush(
-                    Color.FromRgb(
-                        red,
-                        green,
-                        blue));
+            if (!ReferenceEquals(_lastBrush, brush))
+            {
+                GameStatusText.Foreground = brush;
+                _lastBrush = brush;
+            }
         }
 
         private void ChangeGameLocationButton_Click(
@@ -212,17 +174,14 @@ namespace VersePulse.App
             try
             {
                 InstallationInfo? installation =
-                    _installationManager
-                        .RequestInstallation();
+                    _installationManager.RequestInstallation();
 
                 if (installation == null)
                 {
                     return;
                 }
 
-                _gameStateService
-                    .SetInstallation(
-                        installation);
+                _gameStateService.SetInstallation(installation);
 
                 MessageBox.Show(
                     $"Star Citizen installation saved.\n\nChannel: {installation.Channel}",
@@ -238,10 +197,10 @@ namespace VersePulse.App
             }
         }
 
-        protected override void OnClosed(
-            EventArgs e)
+        protected override void OnClosed(EventArgs e)
         {
             _gameStateTimer.Stop();
+            _gameStateTimer.Tick -= GameStateTimer_Tick;
 
             base.OnClosed(e);
         }

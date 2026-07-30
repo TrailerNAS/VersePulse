@@ -1,8 +1,9 @@
 ﻿namespace VersePulse.App
 {
-    public class TelemetryData
+    public sealed class TelemetryData
     {
-        public GameState GameState { get; set; }
+        public GameState GameState { get; set; } =
+            GameState.GameClosed;
 
         public string SessionId { get; set; } = "--";
 

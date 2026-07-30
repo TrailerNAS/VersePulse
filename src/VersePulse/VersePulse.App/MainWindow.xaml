@@ -1,41 +1,48 @@
-    <Window 
-        x:Class="VersePulse.App.MainWindow"
-        xmlns:controls="clr-namespace:VersePulse.App.Controls"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="VersePulse"
-        Width="390"
-        Height="580"
-        MinHeight="100"
-        WindowStartupLocation="CenterScreen"
-        ResizeMode="CanResizeWithGrip"
-        Topmost="True"
-        Background="#10151C">
+<Window
+    x:Class="VersePulse.App.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    Title="VersePulse"
+    Width="390"
+    Height="469"
+    MinWidth="390"
+    WindowStartupLocation="CenterScreen"
+    ResizeMode="NoResize"
+    Background="#10151C"
+    UseLayoutRounding="True"
+    SnapsToDevicePixels="True">
 
-    <Grid Margin="14,14,14,14">
+    <Grid
+        Margin="14"
+        TextOptions.TextFormattingMode="Display"
+        TextOptions.TextRenderingMode="ClearType">
 
         <Border
             Padding="20"
             CornerRadius="14"
             Background="#18212B"
             BorderBrush="#344454"
-            BorderThickness="1">
+            BorderThickness="1"
+            CacheMode="BitmapCache">
 
             <StackPanel>
-                <TextBlock Text="VersePulse"
+
+                <TextBlock
+                    Text="VersePulse"
                     FontSize="30"
                     FontWeight="SemiBold"
                     Foreground="White"
                     HorizontalAlignment="Center"/>
 
-                <TextBlock Text="STAR CITIZEN SERVER HEALTH"
+                <TextBlock
+                    Text="STAR CITIZEN SERVER HEALTH"
                     Margin="0,4,0,22"
                     FontSize="11"
                     Foreground="#8FA7BB"
                     HorizontalAlignment="Center"/>
 
-                <!-- Main telemetry -->
                 <Grid>
+
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="Auto"/>
@@ -51,14 +58,15 @@
                         <RowDefinition Height="42"/>
                     </Grid.RowDefinitions>
 
-                    <!-- Game status -->
+                    <!-- Game Status -->
+
                     <TextBlock
                         Text="Star Citizen"
                         Foreground="#B8C7D3"
-                        VerticalAlignment="Center" Height="16"/>
+                        VerticalAlignment="Center"/>
 
-                    <TextBlock x:Name="GameStatusText"
-                        Grid.Row="0"
+                    <TextBlock
+                        x:Name="GameStatusText"
                         Grid.Column="1"
                         Text="Game closed"
                         Foreground="#F0B35A"
@@ -66,12 +74,15 @@
                         VerticalAlignment="Center"/>
 
                     <!-- Client FPS -->
-                    <TextBlock Grid.Row="1"
+
+                    <TextBlock
+                        Grid.Row="1"
                         Text="Client FPS"
                         Foreground="#B8C7D3"
                         VerticalAlignment="Center"/>
 
-                    <TextBlock x:Name="ClientFPSText"
+                    <TextBlock
+                        x:Name="ClientFPSText"
                         Grid.Row="1"
                         Grid.Column="1"
                         Text="--"
@@ -81,12 +92,16 @@
                         VerticalAlignment="Center"/>
 
                     <!-- Server FPS -->
-                    <TextBlock Grid.Row="2"
+
+                    <TextBlock
+                        Grid.Row="2"
                         Text="Server FPS"
                         Foreground="#B8C7D3"
                         VerticalAlignment="Center"/>
 
-                    <TextBlock Grid.Row="2"
+                    <TextBlock
+                        x:Name="ServerFPSText"
+                        Grid.Row="2"
                         Grid.Column="1"
                         Text="--"
                         Foreground="White"
@@ -95,12 +110,16 @@
                         VerticalAlignment="Center"/>
 
                     <!-- Ping -->
-                    <TextBlock Grid.Row="3"
+
+                    <TextBlock
+                        Grid.Row="3"
                         Text="Ping"
                         Foreground="#B8C7D3"
                         VerticalAlignment="Center"/>
 
-                    <TextBlock Grid.Row="3"
+                    <TextBlock
+                        x:Name="PingText"
+                        Grid.Row="3"
                         Grid.Column="1"
                         Text="-- ms"
                         Foreground="White"
@@ -108,13 +127,16 @@
                         FontWeight="SemiBold"
                         VerticalAlignment="Center"/>
 
-                    <!-- CPU usage -->
-                    <TextBlock Grid.Row="4"
+                    <!-- CPU Usage -->
+
+                    <TextBlock
+                        Grid.Row="4"
                         Text="CPU Usage"
                         Foreground="#B8C7D3"
                         VerticalAlignment="Center"/>
 
-                    <TextBlock x:Name="CpuUsageText"
+                    <TextBlock
+                        x:Name="CpuUsageText"
                         Grid.Row="4"
                         Grid.Column="1"
                         Text="-- %"
@@ -123,13 +145,16 @@
                         FontWeight="SemiBold"
                         VerticalAlignment="Center"/>
 
-                    <!-- RAM usage -->
-                    <TextBlock Grid.Row="5"
+                    <!-- RAM Usage -->
+
+                    <TextBlock
+                        Grid.Row="5"
                         Text="RAM Usage"
                         Foreground="#B8C7D3"
                         VerticalAlignment="Center"/>
 
-                    <TextBlock x:Name="RamUsageText"
+                    <TextBlock
+                        x:Name="RamUsageText"
                         Grid.Row="5"
                         Grid.Column="1"
                         Text="-- MB"
@@ -138,13 +163,16 @@
                         FontWeight="SemiBold"
                         VerticalAlignment="Center"/>
 
-                    <!-- Committed memory -->
-                    <TextBlock Grid.Row="6"
+                    <!-- Committed Memory -->
+
+                    <TextBlock
+                        Grid.Row="6"
                         Text="Committed Memory"
                         Foreground="#B8C7D3"
                         VerticalAlignment="Center"/>
 
-                    <TextBlock x:Name="CommittedMemoryText"
+                    <TextBlock
+                        x:Name="CommittedMemoryText"
                         Grid.Row="6"
                         Grid.Column="1"
                         Text="-- MB"
@@ -152,8 +180,13 @@
                         FontSize="18"
                         FontWeight="SemiBold"
                         VerticalAlignment="Center"/>
+
                 </Grid>
+
             </StackPanel>
+
         </Border>
+
     </Grid>
+
 </Window>

@@ -190,11 +190,10 @@ namespace VersePulse.App
         private static InstallationInfo?
             FindFromRunningProcess()
         {
-            Process? process = null;
-
+            
             try
             {
-                process = Process
+                using Process? process = Process
                     .GetProcessesByName("StarCitizen")
                     .FirstOrDefault();
 
@@ -205,17 +204,15 @@ namespace VersePulse.App
             {
                 return null;
             }
-            finally
-            {
-                process?.Dispose();
-            }
         }
 
         private static InstallationInfo?
             FindAutomatically()
         {
             foreach (string rootPath
-                     in BuildCandidateRootPaths())
+                     in BuildCandidateRootPaths()
+                     .Distinct(StringComparer.OrdinalIgnoreCase)
+                     )
             {
                 InstallationInfo? installation =
                     FindFromRoot(rootPath, null);
@@ -227,7 +224,9 @@ namespace VersePulse.App
             }
 
             return null;
+        
         }
+
 
         private static InstallationInfo?
             FindFromRoot(
@@ -300,7 +299,7 @@ namespace VersePulse.App
                 "PTU" => 2,
                 "EPTU" => 3,
                 "TECH-PREVIEW" => 4,
-                _ => 10
+                _ => 5
             };
         }
 

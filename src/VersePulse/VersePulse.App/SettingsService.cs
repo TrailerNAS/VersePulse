@@ -9,6 +9,11 @@ namespace VersePulse.App
         private readonly string _settingsDirectory;
         private readonly string _settingsFilePath;
 
+        private static readonly JsonSerializerOptions JsonOptions = new()
+        {
+            WriteIndented = true
+        };
+
         public SettingsService()
         {
             _settingsDirectory = Path.Combine(
@@ -30,14 +35,20 @@ namespace VersePulse.App
                     return new AppSettings();
                 }
 
-                string json = File.ReadAllText(
-                    _settingsFilePath);
+                string json = File.ReadAllText(_settingsFilePath);
 
-                return JsonSerializer.Deserialize<AppSettings>(json)
-                       ?? new AppSettings();
+                AppSettings? settings =
+                    JsonSerializer.Deserialize<AppSettings>(
+                        json,
+                        JsonOptions);
+
+                settings ??= new AppSettings();
+
+                return settings;
             }
             catch
             {
+                // Corrupted or unreadable settings.
                 return new AppSettings();
             }
         }
@@ -46,19 +57,23 @@ namespace VersePulse.App
         {
             try
             {
-                Directory.CreateDirectory(
-                    _settingsDirectory);
+                Directory.CreateDirectory(_settingsDirectory);
 
                 string json = JsonSerializer.Serialize(
                     settings,
-                    new JsonSerializerOptions
-                    {
-                        WriteIndented = true
-                    });
+                    JsonOptions);
+
+                string tempFile =
+                    _settingsFilePath + ".tmp";
 
                 File.WriteAllText(
-                    _settingsFilePath,
+                    tempFile,
                     json);
+
+                File.Move(
+                    tempFile,
+                    _settingsFilePath,
+                    true);
 
                 return true;
             }

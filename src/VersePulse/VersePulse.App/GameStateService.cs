@@ -46,7 +46,6 @@ namespace VersePulse.App
                     installation.ExecutablePath,
                     StringComparison.OrdinalIgnoreCase))
             {
-                _installation = installation;
                 return;
             }
 
@@ -95,8 +94,6 @@ namespace VersePulse.App
                 return _telemetry;
             }
 
-            starCitizenProcess.Dispose();
-
             string? logPath = FindGameLogPath();
 
             if (string.IsNullOrWhiteSpace(logPath)
@@ -128,7 +125,7 @@ namespace VersePulse.App
 
             try
             {
-                processes = Process.GetProcesses();
+                processes = Process.GetProcessesByName("RSI Launcher");
             }
             catch
             {
@@ -203,8 +200,12 @@ namespace VersePulse.App
             }
             catch (UnauthorizedAccessException)
             {
-                _telemetry.LastEvent =
+                 _telemetry.LastEvent =
                     "Access to Game.log was denied";
+            }
+            catch (Exception ex)
+            {
+                _telemetry.LastEvent = ex.Message;
             }
         }
 
@@ -216,6 +217,7 @@ namespace VersePulse.App
             _telemetry.Region = "--";
             _telemetry.LinesParsed = 0;
             _telemetry.LastEvent = lastEvent;
+            _telemetry.LogFilePath = "--";
         }
 
         private void ResetLogTracking()
@@ -228,6 +230,7 @@ namespace VersePulse.App
             _telemetry.Region = "--";
             _telemetry.LogFilePath = "--";
             _telemetry.LinesParsed = 0;
+            _telemetry.LastEvent = "--";
         }
     }
 }
