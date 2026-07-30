@@ -1,6 +1,9 @@
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Threading;
+using VersePulse.App.Telemetry;
+using VersePulse.App.Telemetry.Parsing;
+using VersePulse.App.Telemetry.Parsing.Parsers;
 
 namespace VersePulse.App
 {
@@ -29,9 +32,23 @@ namespace VersePulse.App
                 new InstallationManager(
                     _settingsService);
 
+            ILogReader logReader =
+                new LogReader();
+
+            ParserPipeline parserPipeline =
+                new(
+                    new ILogParser[]
+                    {
+                        new SessionParser(),
+                        new EnvironmentParser(),
+                        new GameStateParser()
+                    });
+
             _gameStateService =
                 new GameStateService(
-                    _installationManager);
+                    _installationManager,
+                    logReader,
+                    parserPipeline);
 
             _gameStateTimer =
                 new DispatcherTimer

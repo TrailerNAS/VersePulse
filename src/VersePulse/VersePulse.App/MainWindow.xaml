@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="VersePulse"
         Width="390"
-        Height="431"
+        Height="455"
         MinHeight="390"
         WindowStartupLocation="CenterScreen"
         ResizeMode="NoResize"

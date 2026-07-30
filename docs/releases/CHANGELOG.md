@@ -1,12 +1,16 @@
-# Changelog
-
-All notable changes to VersePulse will be documented in this file.
-
-The format is based on **Keep a Changelog** and follows **Semantic Versioning** where practical.
-
----
-
 # [Unreleased]
+
+## Added
+
+- Incremental `Game.log` reader result model
+- Modular parser pipeline
+- Session, environment, and game-state parsers
+- Spectrum community thread link
+
+## Changed
+
+- `GameStateService` now consumes `ILogReader` and `ParserPipeline`
+- Log file access and parsing responsibilities are separated
 
 ## Added
 

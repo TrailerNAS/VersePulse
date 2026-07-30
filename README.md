@@ -48,7 +48,8 @@ All information is obtained from Star Citizen's publicly available Game.log and 
 - Session detection
 - Environment detection
 - Settings persistence
-- Always-on-top overlay framework
+- Incremental Game.log reader
+- Modular parser pipeline
 
 ---
 
@@ -57,8 +58,8 @@ All information is obtained from Star Citizen's publicly available Game.log and 
 ## Core
 
 - Telemetry Engine
-- Installation Manager
-- Modular parser framework
+- Immutable telemetry snapshots
+- Expanded parser coverage
 - Session timeline
 - Crash detection
 
@@ -177,6 +178,14 @@ See
 ```
 docs/development/ROADMAP.md
 ```
+
+---
+
+# Community
+
+Discuss VersePulse, share feedback, or volunteer to help on the official Star Citizen Spectrum thread:
+
+[VersePulse on Spectrum](https://robertsspaceindustries.com/spectrum/community/SC/forum/50172/thread/versepulse)
 
 ---
 

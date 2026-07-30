@@ -9,13 +9,15 @@ public sealed class LogReader : ILogReader
     private long _lastPosition;
     private string? _currentLogPath;
 
-    public IEnumerable<string> ReadNewLines(string logPath)
+    public LogReadResult ReadNewLines(string logPath)
     {
-        if (string.IsNullOrWhiteSpace(logPath))
-            yield break;
+        if (string.IsNullOrWhiteSpace(logPath)
+            || !File.Exists(logPath))
+        {
+            return LogReadResult.Empty;
+        }
 
-        if (!File.Exists(logPath))
-            yield break;
+        LogReadStatus status = LogReadStatus.NoChange;
 
         if (!string.Equals(
                 _currentLogPath,
@@ -24,6 +26,7 @@ public sealed class LogReader : ILogReader
         {
             _currentLogPath = logPath;
             _lastPosition = 0;
+            status = LogReadStatus.Connected;
         }
 
         using FileStream stream = new(
@@ -33,20 +36,24 @@ public sealed class LogReader : ILogReader
             FileShare.ReadWrite | FileShare.Delete);
 
         if (_lastPosition > stream.Length)
+        {
             _lastPosition = 0;
+            status = LogReadStatus.Restarted;
+        }
 
         stream.Seek(_lastPosition, SeekOrigin.Begin);
 
         using StreamReader reader = new(stream);
+        List<string> lines = [];
 
-        string? line;
-
-        while ((line = reader.ReadLine()) != null)
+        while (reader.ReadLine() is { } line)
         {
-            yield return line;
+            lines.Add(line);
         }
 
         _lastPosition = stream.Position;
+
+        return new LogReadResult(lines, status);
     }
 
     public void Reset()
