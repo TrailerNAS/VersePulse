@@ -311,7 +311,7 @@
             </Border>
 
             <Button x:Name="DeveloperModeButton"
-                    Content="Show Developer Diagnostics"
+                    Content="Developer Diagnostics"
                     Margin="0,14,0,0"
                     Height="34"
                     Click="DeveloperModeButton_Click"/>
