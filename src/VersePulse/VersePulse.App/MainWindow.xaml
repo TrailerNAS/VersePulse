@@ -1,157 +1,161 @@
-<Window x:Class="VersePulse.App.MainWindow"
+    <Window 
+        x:Class="VersePulse.App.MainWindow"
+        xmlns:controls="clr-namespace:VersePulse.App.Controls"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="VersePulse"
         Width="390"
         Height="580"
-        MinHeight="500"
+        MinHeight="100"
         WindowStartupLocation="CenterScreen"
-        ResizeMode="NoResize"
+        ResizeMode="CanResizeWithGrip"
         Topmost="True"
         Background="#10151C">
 
-    <Border Margin="14"
+    <Grid Margin="14,14,14,14">
+
+        <Border
             Padding="20"
             CornerRadius="14"
             Background="#18212B"
             BorderBrush="#344454"
             BorderThickness="1">
 
-        <StackPanel>
-            <TextBlock Text="VersePulse"
-                       FontSize="30"
-                       FontWeight="SemiBold"
-                       Foreground="White"
-                       HorizontalAlignment="Center"/>
+            <StackPanel>
+                <TextBlock Text="VersePulse"
+                    FontSize="30"
+                    FontWeight="SemiBold"
+                    Foreground="White"
+                    HorizontalAlignment="Center"/>
 
-            <TextBlock Text="STAR CITIZEN SERVER HEALTH"
-                       Margin="0,4,0,22"
-                       FontSize="11"
-                       Foreground="#8FA7BB"
-                       HorizontalAlignment="Center"/>
+                <TextBlock Text="STAR CITIZEN SERVER HEALTH"
+                    Margin="0,4,0,22"
+                    FontSize="11"
+                    Foreground="#8FA7BB"
+                    HorizontalAlignment="Center"/>
 
-            <!-- Main telemetry -->
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="Auto"/>
-                </Grid.ColumnDefinitions>
+                <!-- Main telemetry -->
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
 
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="42"/>
-                    <RowDefinition Height="42"/>
-                    <RowDefinition Height="42"/>
-                    <RowDefinition Height="42"/>
-                    <RowDefinition Height="42"/>
-                    <RowDefinition Height="42"/>
-                    <RowDefinition Height="42"/>
-                </Grid.RowDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="42"/>
+                        <RowDefinition Height="42"/>
+                        <RowDefinition Height="42"/>
+                        <RowDefinition Height="42"/>
+                        <RowDefinition Height="42"/>
+                        <RowDefinition Height="42"/>
+                        <RowDefinition Height="42"/>
+                    </Grid.RowDefinitions>
 
-                <!-- Game status -->
-                <TextBlock Grid.Row="0"
-                           Text="Star Citizen"
-                           Foreground="#B8C7D3"
-                           VerticalAlignment="Center"/>
+                    <!-- Game status -->
+                    <TextBlock
+                        Text="Star Citizen"
+                        Foreground="#B8C7D3"
+                        VerticalAlignment="Center" Height="16"/>
 
-                <TextBlock x:Name="GameStatusText"
-                           Grid.Row="0"
-                           Grid.Column="1"
-                           Text="Game closed"
-                           Foreground="#F0B35A"
-                           FontWeight="SemiBold"
-                           VerticalAlignment="Center"/>
+                    <TextBlock x:Name="GameStatusText"
+                        Grid.Row="0"
+                        Grid.Column="1"
+                        Text="Game closed"
+                        Foreground="#F0B35A"
+                        FontWeight="SemiBold"
+                        VerticalAlignment="Center"/>
 
-                <!-- Client FPS -->
-                <TextBlock Grid.Row="1"
-                           Text="Client FPS"
-                           Foreground="#B8C7D3"
-                           VerticalAlignment="Center"/>
+                    <!-- Client FPS -->
+                    <TextBlock Grid.Row="1"
+                        Text="Client FPS"
+                        Foreground="#B8C7D3"
+                        VerticalAlignment="Center"/>
 
-                <TextBlock x:Name="ClientFPSText"
-                           Grid.Row="1"
-                           Grid.Column="1"
-                           Text="--"
-                           Foreground="White"
-                           FontSize="18"
-                           FontWeight="SemiBold"
-                           VerticalAlignment="Center"/>
+                    <TextBlock x:Name="ClientFPSText"
+                        Grid.Row="1"
+                        Grid.Column="1"
+                        Text="--"
+                        Foreground="White"
+                        FontSize="18"
+                        FontWeight="SemiBold"
+                        VerticalAlignment="Center"/>
 
-                <!-- Server FPS -->
-                <TextBlock Grid.Row="2"
-                           Text="Server FPS"
-                           Foreground="#B8C7D3"
-                           VerticalAlignment="Center"/>
+                    <!-- Server FPS -->
+                    <TextBlock Grid.Row="2"
+                        Text="Server FPS"
+                        Foreground="#B8C7D3"
+                        VerticalAlignment="Center"/>
 
-                <TextBlock Grid.Row="2"
-                           Grid.Column="1"
-                           Text="--"
-                           Foreground="White"
-                           FontSize="18"
-                           FontWeight="SemiBold"
-                           VerticalAlignment="Center"/>
+                    <TextBlock Grid.Row="2"
+                        Grid.Column="1"
+                        Text="--"
+                        Foreground="White"
+                        FontSize="18"
+                        FontWeight="SemiBold"
+                        VerticalAlignment="Center"/>
 
-                <!-- Ping -->
-                <TextBlock Grid.Row="3"
-                           Text="Ping"
-                           Foreground="#B8C7D3"
-                           VerticalAlignment="Center"/>
+                    <!-- Ping -->
+                    <TextBlock Grid.Row="3"
+                        Text="Ping"
+                        Foreground="#B8C7D3"
+                        VerticalAlignment="Center"/>
 
-                <TextBlock Grid.Row="3"
-                           Grid.Column="1"
-                           Text="-- ms"
-                           Foreground="White"
-                           FontSize="18"
-                           FontWeight="SemiBold"
-                           VerticalAlignment="Center"/>
+                    <TextBlock Grid.Row="3"
+                        Grid.Column="1"
+                        Text="-- ms"
+                        Foreground="White"
+                        FontSize="18"
+                        FontWeight="SemiBold"
+                        VerticalAlignment="Center"/>
 
-                <!-- CPU usage -->
-                <TextBlock Grid.Row="4"
-                           Text="CPU Usage"
-                           Foreground="#B8C7D3"
-                           VerticalAlignment="Center"/>
+                    <!-- CPU usage -->
+                    <TextBlock Grid.Row="4"
+                        Text="CPU Usage"
+                        Foreground="#B8C7D3"
+                        VerticalAlignment="Center"/>
 
-                <TextBlock x:Name="CpuUsageText"
-                           Grid.Row="4"
-                           Grid.Column="1"
-                           Text="-- %"
-                           Foreground="White"
-                           FontSize="18"
-                           FontWeight="SemiBold"
-                           VerticalAlignment="Center"/>
+                    <TextBlock x:Name="CpuUsageText"
+                        Grid.Row="4"
+                        Grid.Column="1"
+                        Text="-- %"
+                        Foreground="White"
+                        FontSize="18"
+                        FontWeight="SemiBold"
+                        VerticalAlignment="Center"/>
 
-                <!-- RAM usage -->
-                <TextBlock Grid.Row="5"
-                           Text="RAM Usage"
-                           Foreground="#B8C7D3"
-                           VerticalAlignment="Center"/>
+                    <!-- RAM usage -->
+                    <TextBlock Grid.Row="5"
+                        Text="RAM Usage"
+                        Foreground="#B8C7D3"
+                        VerticalAlignment="Center"/>
 
-                <TextBlock x:Name="RamUsageText"
-                           Grid.Row="5"
-                           Grid.Column="1"
-                           Text="-- MB"
-                           Foreground="White"
-                           FontSize="18"
-                           FontWeight="SemiBold"
-                           VerticalAlignment="Center"/>
+                    <TextBlock x:Name="RamUsageText"
+                        Grid.Row="5"
+                        Grid.Column="1"
+                        Text="-- MB"
+                        Foreground="White"
+                        FontSize="18"
+                        FontWeight="SemiBold"
+                        VerticalAlignment="Center"/>
 
-                <!-- Committed memory -->
-                <TextBlock Grid.Row="6"
-                           Text="Committed Memory"
-                           Foreground="#B8C7D3"
-                           VerticalAlignment="Center"/>
+                    <!-- Committed memory -->
+                    <TextBlock Grid.Row="6"
+                        Text="Committed Memory"
+                        Foreground="#B8C7D3"
+                        VerticalAlignment="Center"/>
 
-                <TextBlock x:Name="CommittedMemoryText"
-                           Grid.Row="6"
-                           Grid.Column="1"
-                           Text="-- MB"
-                           Foreground="White"
-                           FontSize="18"
-                           FontWeight="SemiBold"
-                           VerticalAlignment="Center"/>
-            </Grid>
+                    <TextBlock x:Name="CommittedMemoryText"
+                        Grid.Row="6"
+                        Grid.Column="1"
+                        Text="-- MB"
+                        Foreground="White"
+                        FontSize="18"
+                        FontWeight="SemiBold"
+                        VerticalAlignment="Center"/>
+                </Grid>
 
-            <!-- Developer diagnostics -->
-            <Border x:Name="DeveloperPanel"
+                <!-- Developer diagnostics -->
+                <Border x:Name="DeveloperPanel"
                     Visibility="Collapsed"
                     Margin="0,14,0,0"
                     Padding="14"
@@ -160,161 +164,162 @@
                     BorderBrush="#344454"
                     BorderThickness="1">
 
-                <StackPanel>
-                    <TextBlock Text="DEVELOPER DIAGNOSTICS"
-                               Margin="0,0,0,12"
-                               FontSize="12"
-                               FontWeight="Bold"
-                               Foreground="#8FCBFF"/>
+                    <StackPanel>
+                        <TextBlock Text="DEVELOPER DIAGNOSTICS"
+                            Margin="0,0,0,12"
+                            FontSize="12"
+                            FontWeight="Bold"
+                            Foreground="#8FCBFF"/>
 
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="105"/>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="105"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
 
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="36"/>
-                            <RowDefinition Height="36"/>
-                            <RowDefinition Height="36"/>
-                            <RowDefinition Height="36"/>
-                            <RowDefinition Height="36"/>
-                            <RowDefinition Height="50"/>
-                        </Grid.RowDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="36"/>
+                                <RowDefinition Height="36"/>
+                                <RowDefinition Height="36"/>
+                                <RowDefinition Height="36"/>
+                                <RowDefinition Height="36"/>
+                                <RowDefinition Height="50"/>
+                            </Grid.RowDefinitions>
 
-                        <!-- State -->
-                        <TextBlock Grid.Row="0"
-                                   Text="State"
-                                   Foreground="#8FA7BB"/>
+                            <!-- State -->
+                            <TextBlock Grid.Row="0"
+                                Text="State"
+                                Foreground="#8FA7BB"/>
 
-                        <TextBlock x:Name="DeveloperStateText"
-                                   Grid.Row="0"
-                                   Grid.Column="1"
-                                   Text="--"
-                                   Foreground="White"/>
+                            <TextBlock x:Name="DeveloperStateText"
+                                Grid.Row="0"
+                                Grid.Column="1"
+                                Text="--"
+                                Foreground="White"/>
 
-                        <!-- Session -->
-                        <TextBlock Grid.Row="1"
-                                   Text="Session"
-                                   Foreground="#8FA7BB"/>
+                            <!-- Session -->
+                            <TextBlock Grid.Row="1"
+                                Text="Session"
+                                Foreground="#8FA7BB"/>
 
-                        <TextBlock x:Name="SessionText"
-                                   Grid.Row="1"
-                                   Grid.Column="1"
-                                   Text="--"
-                                   Foreground="White"
-                                   TextTrimming="CharacterEllipsis"
-                                   ToolTip="{Binding Text, RelativeSource={RelativeSource Self}}"/>
+                            <TextBlock x:Name="SessionText"
+                                Grid.Row="1"
+                                Grid.Column="1"
+                                Text="--"
+                                Foreground="White"
+                                TextTrimming="CharacterEllipsis"
+                                ToolTip="{Binding Text, RelativeSource={RelativeSource Mode=Self}}"/>
 
-                        <!-- Environment -->
-                        <TextBlock Grid.Row="2"
-                                   Text="Environment"
-                                   Foreground="#8FA7BB"/>
+                            <!-- Environment -->
+                            <TextBlock Grid.Row="2"
+                                Text="Environment"
+                                Foreground="#8FA7BB"/>
 
-                        <TextBlock x:Name="EnvironmentText"
-                                   Grid.Row="2"
-                                   Grid.Column="1"
-                                   Text="--"
-                                   Foreground="White"
-                                   TextTrimming="CharacterEllipsis"
-                                   ToolTip="{Binding Text, RelativeSource={RelativeSource Self}}"/>
+                            <TextBlock x:Name="EnvironmentText"
+                                Grid.Row="2"
+                                Grid.Column="1"
+                                Text="--"
+                                Foreground="White"
+                                TextTrimming="CharacterEllipsis"
+                                ToolTip="{Binding Text, RelativeSource={RelativeSource Mode=Self}}"/>
 
-                        <!-- Region -->
-                        <TextBlock Grid.Row="3"
-                                   Text="Region"
-                                   Foreground="#8FA7BB"/>
+                            <!-- Region -->
+                            <TextBlock Grid.Row="3"
+                                Text="Region"
+                                Foreground="#8FA7BB"/>
 
-                        <TextBlock x:Name="RegionText"
-                                   Grid.Row="3"
-                                   Grid.Column="1"
-                                   Text="--"
-                                   Foreground="White"/>
+                            <TextBlock x:Name="RegionText"
+                                Grid.Row="3"
+                                Grid.Column="1"
+                                Text="--"
+                                Foreground="White"/>
 
-                        <!-- Lines parsed -->
-                        <TextBlock Grid.Row="4"
-                                   Text="Lines parsed"
-                                   Foreground="#8FA7BB"/>
+                            <!-- Lines parsed -->
+                            <TextBlock Grid.Row="4"
+                                Text="Lines parsed"
+                                Foreground="#8FA7BB"/>
 
-                        <TextBlock x:Name="LinesParsedText"
-                                   Grid.Row="4"
-                                   Grid.Column="1"
-                                   Text="0"
-                                   Foreground="White"/>
+                            <TextBlock x:Name="LinesParsedText"
+                                Grid.Row="4"
+                                Grid.Column="1"
+                                Text="0"
+                                Foreground="White"/>
 
-                        <!-- Last event -->
-                        <TextBlock Grid.Row="5"
-                                   Text="Last event"
-                                   Foreground="#8FA7BB"/>
+                            <!-- Last event -->
+                            <TextBlock Grid.Row="5"
+                                Text="Last event"
+                                Foreground="#8FA7BB"/>
 
-                        <TextBlock x:Name="LastEventText"
-                                   Grid.Row="5"
-                                   Grid.Column="1"
-                                   Text="Waiting..."
-                                   Foreground="White"
-                                   TextWrapping="Wrap"/>
-                    </Grid>
+                            <TextBlock x:Name="LastEventText"
+                                Grid.Row="5"
+                                Grid.Column="1"
+                                Text="Waiting..."
+                                Foreground="White"
+                                TextWrapping="Wrap"/>
+                        </Grid>
 
-                    <TextBlock Text="Star Citizen root"
-                               Margin="0,10,0,4"
-                               Foreground="#8FA7BB"/>
+                        <TextBlock Text="Star Citizen root"
+                            Margin="0,10,0,4"
+                            Foreground="#8FA7BB"/>
 
-                    <TextBlock x:Name="RootPathText"
-                               Text="--"
-                               FontSize="10"
-                               Foreground="#B8C7D3"
-                               TextWrapping="Wrap"
-                               ToolTip="{Binding Text, RelativeSource={RelativeSource Self}}"/>
+                        <TextBlock x:Name="RootPathText"
+                            Text="--"
+                            FontSize="10"
+                            Foreground="#B8C7D3"
+                            TextWrapping="Wrap"
+                            ToolTip="{Binding Text, RelativeSource={RelativeSource Mode=Self}}"/>
 
-                    <Grid Margin="0,10,0,0">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="105"/>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
+                        <Grid Margin="0,10,0,0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="105"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
 
-                        <TextBlock Text="Active channel"
-                                   Foreground="#8FA7BB"/>
+                            <TextBlock Text="Active channel"
+                                Foreground="#8FA7BB"/>
 
-                        <TextBlock x:Name="ChannelText"
-                                   Grid.Column="1"
-                                   Text="--"
-                                   Foreground="White"
-                                   FontWeight="SemiBold"/>
-                    </Grid>
+                            <TextBlock x:Name="ChannelText"
+                                Grid.Column="1"
+                                Text="--"
+                                Foreground="White"
+                                FontWeight="SemiBold"/>
+                        </Grid>
 
-                    <TextBlock Text="Executable"
-                               Margin="0,10,0,4"
-                               Foreground="#8FA7BB"/>
+                        <TextBlock Text="Executable"
+                            Margin="0,10,0,4"
+                            Foreground="#8FA7BB"/>
 
-                    <TextBlock x:Name="ExecutablePathText"
-                               Text="--"
-                               FontSize="10"
-                               Foreground="#B8C7D3"
-                               TextWrapping="Wrap"
-                               ToolTip="{Binding Text, RelativeSource={RelativeSource Self}}"/>
+                        <TextBlock x:Name="ExecutablePathText"
+                            Text="--"
+                            FontSize="10"
+                            Foreground="#B8C7D3"
+                            TextWrapping="Wrap"
+                            ToolTip="{Binding Text, RelativeSource={RelativeSource Mode=Self}}"/>
 
-                    <Button Content="Change Star Citizen Installation"
+                        <Button Content="Change Star Citizen Installation"
                             Margin="0,10,0,0"
                             Height="30"
                             Click="ChangeGameLocationButton_Click"/>
 
-                    <TextBlock Text="Log file"
-                               Margin="0,12,0,4"
-                               Foreground="#8FA7BB"/>
+                        <TextBlock Text="Log file"
+                            Margin="0,12,0,4"
+                            Foreground="#8FA7BB"/>
 
-                    <TextBlock x:Name="LogFileText"
-                               Text="--"
-                               FontSize="10"
-                               Foreground="#B8C7D3"
-                               TextWrapping="Wrap"
-                               ToolTip="{Binding Text, RelativeSource={RelativeSource Self}}"/>
-                </StackPanel>
-            </Border>
+                        <TextBlock x:Name="LogFileText"
+                            Text="--"
+                            FontSize="10"
+                            Foreground="#B8C7D3"
+                            TextWrapping="Wrap"
+                            ToolTip="{Binding Text, RelativeSource={RelativeSource Mode=Self}}"/>
+                    </StackPanel>
+                </Border>
 
-            <Button x:Name="DeveloperModeButton"
+                <Button x:Name="DeveloperModeButton"
                     Content="Developer Diagnostics"
                     Margin="0,14,0,0"
                     Height="34"
                     Click="DeveloperModeButton_Click"/>
-        </StackPanel>
-    </Border>
+            </StackPanel>
+        </Border>
+    </Grid>
 </Window>
