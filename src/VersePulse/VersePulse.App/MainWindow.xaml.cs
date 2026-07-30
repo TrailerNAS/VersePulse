@@ -149,48 +149,6 @@ namespace VersePulse.App
                         90);
                     break;
             }
-
-            DeveloperStateText.Text =
-                FormatGameState(
-                    telemetry.GameState);
-
-            SessionText.Text =
-                telemetry.SessionId;
-
-            EnvironmentText.Text =
-                telemetry.ServerName;
-
-            RegionText.Text =
-                telemetry.Region;
-
-            LinesParsedText.Text =
-                telemetry.LinesParsed
-                    .ToString("N0");
-
-            LastEventText.Text =
-                telemetry.LastEvent;
-
-            InstallationInfo installation =
-                _gameStateService
-                    .GetInstallation();
-
-            RootPathText.Text =
-                DisplayValue(
-                    installation.RootPath);
-
-            ChannelText.Text =
-                DisplayValue(
-                    installation.Channel);
-
-            ExecutablePathText.Text =
-                DisplayValue(
-                    installation.ExecutablePath);
-
-            LogFileText.Text =
-                telemetry.LogFilePath != "--"
-                    ? telemetry.LogFilePath
-                    : DisplayValue(
-                        installation.GameLogPath);
         }
 
         private static string DisplayValue(
@@ -243,30 +201,6 @@ namespace VersePulse.App
                         red,
                         green,
                         blue));
-        }
-
-        private void DeveloperModeButton_Click(
-            object sender,
-            RoutedEventArgs e)
-        {
-            bool isVisible =
-                DeveloperPanel.Visibility
-                == Visibility.Visible;
-
-            DeveloperPanel.Visibility =
-                isVisible
-                    ? Visibility.Collapsed
-                    : Visibility.Visible;
-
-            DeveloperModeButton.Content =
-                isVisible
-                    ? "Show Developer Diagnostics"
-                    : "Hide Developer Diagnostics";
-
-            Height =
-                isVisible
-                    ? 431
-                    : 820;
         }
 
         private void ChangeGameLocationButton_Click(
